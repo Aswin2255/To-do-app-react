@@ -16,11 +16,8 @@ function App() {
       </div>
       <div className="input">
         <input value={todo} onChange={(e)=>settodo(e.target.value)} type="text" placeholder="🖊️ Add item..." />
-        <i onClick={()=>{settodos([...todos,{id:Date.now(),text:todo,status:true}])}} className="fas fa-plus"></i>
-        {
-          console.log(todos)
-          
-        }
+        <i onClick={()=>{settodos([...todos,{id:Date.now(),text:todo,status:false}])}} className="fas fa-plus"></i>
+       
       </div>
       {
               todos.map((e)=>{
@@ -29,19 +26,40 @@ function App() {
                 <div className="todo">
                   <div className="left">
                     <input onChange={(event)=>{
-                      console.log(event.target.value)
+                      settodos(todos.filter((values)=>{
+                        if(values.id === e.id){
+                          values.status = event.target.value
+                          
+                        }
+                        return values
+                       
+                      }))
                     }} value={e.status} type="checkbox" name="" id="" />
                     <p>{e.text}</p>
+                    
                    
                   </div>
                   <div className="right">
                     <i className="fas fa-times"></i>
                   </div>
+                  
+                  
+                  
                 </div>
               </div>
                )
               })
+            
+              
             }
+            {
+              todos.map((event)=>{
+                console.log(event.status)
+                return null
+              })
+            }
+           
+           
      
     </div>
   );
