@@ -4,7 +4,10 @@ import {useState} from 'react'
 
 function App() {
   const [todos,settodos] = useState([])
-  const [todo,settodo] = useState('')
+  let [todo,settodo] = useState('')
+  let d = new Date()
+  let dn = d.getDay()
+  let days = ['sunday','monday','tuesday','wenesday','thursday','friday','saturday']
   return (
     <div className="app">
       <div className="mainHeading">
@@ -12,23 +15,30 @@ function App() {
       </div>
       <div className="subHeading">
         <br />
-        <h2>Whoop, it's Wednesday 🌝 ☕ </h2>
+     
+
+     
+        <h2>Whoop, it's {days[dn]} 🌝 ☕ </h2>
       </div>
       <div className="input">
-        <input value={todo} onChange={(e)=>settodo(e.target.value)} type="text" placeholder="🖊️ Add item..." />
-        <i onClick={()=>{settodos([...todos,{id:Date.now(),text:todo,status:false}])}} className="fas fa-plus"></i>
+        <input value={todo}  id = 'input'  onChange={(e)=>settodo(e.target.value)} type="text" placeholder="🖊️ Add item..." />
+        <i onClick={()=>{
+          settodos([...todos,{id:Date.now(),text:todo,status:false}])
+          settodo('')
+       }} className="fas fa-plus"></i>
        
       </div>
       {
-              todos.map((e)=>{
+              todos.map((e,index)=>{
                return (
                 <div className="todos">
                 <div className="todo">
                   <div className="left">
                     <input onChange={(event)=>{
+                      
                       settodos(todos.filter((values)=>{
                         if(values.id === e.id){
-                          values.status = event.target.value
+                          values.status = event.target.checked
                           
                         }
                         return values
@@ -40,7 +50,26 @@ function App() {
                    
                   </div>
                   <div className="right">
-                    <i className="fas fa-times"></i>
+                    <i key={index} onClick={()=>{
+                      settodos(todos.filter((elem,index)=>{
+                        if(elem.id === e.id){
+                          
+                          
+                          
+                           todos.splice(index, 1)
+                           
+                            return settodos(todos)
+                            
+                           
+                           
+
+                        }
+                       
+                       return elem
+                        
+                        
+                      }))
+                    }} className="fas fa-times"></i>
                   </div>
                   
                   
@@ -54,7 +83,9 @@ function App() {
             }
             {
               todos.map((event)=>{
-                console.log(event.status)
+                if(event.status){
+                  return(<h1>{event.text}</h1>)
+                }
                 return null
               })
             }
